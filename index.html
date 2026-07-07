@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neha Sree A — Embedded Systems Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0c1a14;
+    --bg-alt: #122921;
+    --panel: #0f231c;
+    --copper: #c17f45;
+    --copper-bright: #e8a968;
+    --silk: #eae6da;
+    --silk-dim: #a9b3ac;
+    --trace: #3f6f5c;
+    --trace-dim: #24473a;
+    --solder: #d9a534;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    background:
+      radial-gradient(circle at 1px 1px, rgba(63,111,92,0.18) 1px, transparent 1px) 0 0/28px 28px,
+      var(--bg);
+    color: var(--silk);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a{ color: var(--copper-bright); text-decoration:none; }
+  a:hover{ text-decoration: underline; }
+
+  ::selection{ background: var(--copper); color: var(--bg); }
+
+  /* ---------- layout shell with trace spine ---------- */
+  .sheet{
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 28px 120px 64px;
+    position: relative;
+  }
+
+  .spine{
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent 0%, var(--trace) 4%, var(--trace) 96%, transparent 100%);
+  }
+
+  .pad{
+    position: absolute;
+    left: 24px;
+    width: 13px; height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--copper);
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 4px var(--bg);
+  }
+  .pad::after{
+    content:'';
+    position:absolute; inset: 3px;
+    border-radius:50%;
+    background: var(--copper);
+    opacity:.6;
+  }
+
+  section{
+    position: relative;
+    padding: 46px 0 46px 30px;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise .7s ease forwards;
+  }
+  section:nth-of-type(1){ animation-delay: .05s; }
+  section:nth-of-type(2){ animation-delay: .12s; }
+  section:nth-of-type(3){ animation-delay: .19s; }
+  section:nth-of-type(4){ animation-delay: .26s; }
+  section:nth-of-type(5){ animation-delay: .33s; }
+  section:nth-of-type(6){ animation-delay: .40s; }
+  section:nth-of-type(7){ animation-delay: .47s; }
+
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+
+  @media (prefers-reduced-motion: reduce){
+    section{ animation: none; opacity:1; transform:none; }
+    html{ scroll-behavior:auto; }
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 10px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .eyebrow::before{ content:'//'; color: var(--trace); }
+
+  h2{
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: .01em;
+    color: var(--silk);
+    margin-bottom: 18px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding-top: 70px;
+    padding-bottom: 50px;
+  }
+  .chip-label{
+    display:inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .2em;
+    color: var(--trace);
+    border: 1px solid var(--trace-dim);
+    padding: 5px 10px;
+    border-radius: 3px;
+    margin-bottom: 22px;
+  }
+  .hero h1{
+    font-family: var(--mono);
+    font-weight: 800;
+    font-size: clamp(34px, 6vw, 54px);
+    line-height: 1.08;
+    color: var(--silk);
+    letter-spacing: -0.01em;
+  }
+  .hero h1 span{ color: var(--copper-bright); }
+  .hero p.tagline{
+    margin-top: 16px;
+    max-width: 520px;
+    color: var(--silk-dim);
+    font-size: 16.5px;
+  }
+
+  .contact-row{
+    margin-top: 30px;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .contact-row a{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--silk);
+    background: var(--panel);
+    border: 1px solid var(--trace-dim);
+    padding: 9px 14px;
+    border-radius: 4px;
+    transition: border-color .2s, color .2s, transform .15s;
+    text-decoration:none;
+  }
+  .contact-row a:hover{
+    border-color: var(--copper);
+    color: var(--copper-bright);
+    transform: translateY(-2px);
+  }
+
+  /* ---------- about ---------- */
+  .about p{ color: var(--silk-dim); max-width: 620px; font-size: 15.5px; }
+
+  /* ---------- skills as pinout table ---------- */
+  .pinout{ width:100%; border-collapse: collapse; }
+  .pinout tr{ border-bottom: 1px dashed var(--trace-dim); }
+  .pinout tr:last-child{ border-bottom:none; }
+  .pinout td{ padding: 12px 8px; vertical-align: top; }
+  .pinout td.pin{
+    font-family: var(--mono);
+    color: var(--copper);
+    font-size: 12px;
+    white-space: nowrap;
+    width: 150px;
+  }
+  .pinout td.val{ color: var(--silk-dim); font-size: 14.5px; }
+  .pinout td.val b{ color: var(--silk); font-weight: 600; }
+
+  /* ---------- projects as datasheet cards ---------- */
+  .card{
+    background: var(--panel);
+    border: 1px solid var(--trace-dim);
+    border-radius: 6px;
+    padding: 22px 22px 20px;
+    margin-bottom: 18px;
+    position: relative;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .card:hover{
+    border-color: var(--copper);
+    box-shadow: 0 0 0 1px var(--copper), 0 8px 24px -12px rgba(193,127,69,0.35);
+  }
+  .card-head{
+    display:flex; justify-content: space-between; align-items:baseline;
+    flex-wrap: wrap; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .card-head .part{
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 15.5px;
+    color: var(--silk);
+  }
+  .card-head .date{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--copper);
+    letter-spacing: .05em;
+  }
+  .card p{ color: var(--silk-dim); font-size: 14.5px; }
+  .status-led{
+    display:inline-block;
+    width:8px; height:8px;
+    border-radius:50%;
+    background: var(--solder);
+    box-shadow: 0 0 8px 1px var(--solder);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ---------- education ---------- */
+  .edu-row{
+    display:flex; gap: 18px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--trace-dim);
+    font-size: 14.5px;
+  }
+  .edu-row:last-child{ border-bottom:none; }
+  .edu-row .yr{
+    font-family: var(--mono);
+    color: var(--copper);
+    min-width: 96px;
+    font-size: 13px;
+  }
+  .edu-row .detail b{ color: var(--silk); }
+  .edu-row .detail{ color: var(--silk-dim); }
+
+  .note{
+    margin-top: 14px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--trace);
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    padding: 40px 0 0 30px;
+    color: var(--silk-dim);
+    font-family: var(--mono);
+    font-size: 12px;
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 600px){
+    .sheet{ padding-left: 46px; padding-right: 18px; }
+    .spine, .pad{ left: 16px; }
+    footer{ padding-left: 16px; }
+  }
+
+  a:focus-visible, .contact-row a:focus-visible{
+    outline: 2px solid var(--copper-bright);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <div class="spine" aria-hidden="true"></div>
+
+  <section class="hero">
+    <div class="pad" aria-hidden="true"></div>
+    <div class="chip-label">EMBEDDED SYSTEMS · REV. 2026</div>
+    <h1>Neha Sree A<br><span>Embedded Systems Engineer</span></h1>
+    <p class="tagline">Building close to the metal — from register-level AVR-GCC firmware to hand-routed PCB layouts. 3rd-year B.E. ECE student preparing for placements in embedded systems.</p>
+    <div class="contact-row">
+      <a href="mailto:nehasree5706@gmail.com">✉ Email</a>
+      <a href="tel:9443340620">☎ 9443340620</a>
+      <a href="https://github.com/Neha-Sree-06" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/neha-sree-a-60b77a326" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="pad" aria-hidden="true"></div>
+    <div class="eyebrow">About</div>
+    <h2>Who I Am</h2>
+    <p>Aspiring Embedded Systems Engineer with hands-on experience designing and developing electronics projects using microcontrollers, sensors, and PCB design tools. I enjoy working close to the hardware — writing register-level C over relying on abstraction layers — and I'm passionate about solving real-world problems through practical, well-engineered electronics. Currently a 3rd-year B.E. ECE student at Anna University, MIT Campus, preparing for placements in embedded systems.</p>
+  </section>
+
+  <section class="skills">
+    <div class="pad" aria-hidden="true"></div>
+    <div class="eyebrow">Specifications</div>
+    <h2>Skills</h2>
+    <table class="pinout">
+      <tr><td class="pin">PROGRAMMING</td><td class="val"><b>C</b>, C++, Python</td></tr>
+      <tr><td class="pin">EMBEDDED SYSTEMS</td><td class="val">Arduino Uno, AVR-GCC register-level C, Sensor Interfacing, Hardware Integration</td></tr>
+      <tr><td class="pin">PCB DESIGN</td><td class="val">KiCad — Schematic Capture, PCB Layout, Trace Routing, Copper Pour</td></tr>
+      <tr><td class="pin">ELECTRONICS</td><td class="val">Analog &amp; Digital Circuit Design, KVL/KCL, Node Voltage Analysis</td></tr>
+      <tr><td class="pin">TOOLS</td><td class="val">KiCad, LTSpice, MATLAB, Arduino IDE</td></tr>
+      <tr><td class="pin">SOFT SKILLS</td><td class="val">Teamwork, Problem Solving, Adaptability</td></tr>
+    </table>
+  </section>
+
+  <section class="projects">
+    <div class="pad" aria-hidden="true"></div>
+    <div class="eyebrow">Datasheet</div>
+    <h2>Projects</h2>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="part"><span class="status-led"></span>Adjustable Auto On/Off Delay Timer — 555 IC</span>
+        <span class="date">MAR 2025</span>
+      </div>
+      <p>Designed and built a delay timer circuit using the 555 timer IC with adjustable on/off timing, enabling precise control of device power cycles through a potentiometer. Also designed the circuit as a complete PCB in KiCad — schematic capture, layout, trace routing, and copper pour — taking the project from breadboard to a manufacturable board.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="part"><span class="status-led"></span>Smart Walking Stick for Visually Impaired People</span>
+        <span class="date">MAR 2026</span>
+      </div>
+      <p>Built using Arduino Uno and an ultrasonic sensor to detect obstacles and provide real-time alerts through a buzzer and vibration motor — applying embedded systems, sensor interfacing, and microcontroller programming to improve user safety.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="part"><span class="status-led"></span>Four-Way Traffic Light Controller</span>
+        <span class="date">OCT 2025</span>
+      </div>
+      <p>Built a sequential LED switching circuit using a 555 timer astable clock driving a 4017 decade counter, with each counter output stage mapped to a traffic light state. Timing adjusted via potentiometer. Demonstrates discrete IC-based sequential logic design without a microcontroller.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <span class="part"><span class="status-led"></span>Automatic Battery Charger</span>
+        <span class="date">OCT 2025</span>
+      </div>
+      <p>Designed an LM317-based adjustable charging circuit with a BC547/BC557 transistor pair for auto-cutoff sensing once the battery reaches full charge. Current limiting set via power resistors (1&#8486;/2.2&#8486;/4.7&#8486; at 2W) for selectable charge rates, with 1N4007 diodes for reverse-polarity protection and an LED charge indicator.</p>
+    </div>
+  </section>
+
+  <section class="education">
+    <div class="pad" aria-hidden="true"></div>
+    <div class="eyebrow">Record</div>
+    <h2>Education</h2>
+    <div class="edu-row">
+      <span class="yr">2023 – 2027</span>
+      <span class="detail"><b>B.E. Electronics &amp; Communication Engineering</b> — Anna University, MIT Campus &nbsp;|&nbsp; CGPA: 9.02</span>
+    </div>
+    <div class="edu-row">
+      <span class="yr">2024</span>
+      <span class="detail">Class 12 — State Board, 97.5%</span>
+    </div>
+    <div class="edu-row">
+      <span class="yr">2022</span>
+      <span class="detail">Class 10 — State Board, 96%</span>
+    </div>
+  </section>
+
+  <section class="certifications">
+    <div class="pad" aria-hidden="true"></div>
+    <div class="eyebrow">Certifications</div>
+    <h2>Courses &amp; Certifications</h2>
+    <div class="edu-row">
+      <span class="yr">NPTEL</span>
+      <span class="detail">Programming, Data Structures and Algorithms using Python</span>
+    </div>
+    <div class="edu-row">
+      <span class="yr">NPTEL</span>
+      <span class="detail">Python for Data Science</span>
+    </div>
+  </section>
+
+  <footer>
+    <span>NEHA SREE A</span>
+    <span>DESIGNED &amp; ROUTED · 2026</span>
+  </footer>
+</div>
+
+</body>
+</html>
